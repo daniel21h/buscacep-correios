@@ -1,7 +1,8 @@
 const PostOffices = require('node-correios')
 
 module.exports = {
-  async create (request, response) {
+  // Retorna dados tratados
+  async index (request, response) {
     const { cep } = request.body
 
     const postOffices = new PostOffices()
@@ -17,5 +18,16 @@ module.exports = {
     }
 
     return response.json(responseCep)
+  },
+
+  // Retorna todos os dados vindos da API
+  async create (request, response) {
+    const { cep } = request.body
+
+    const postOffices = new PostOffices()
+
+    const postResponse = await postOffices.consultaCEP({ cep })
+
+    return response.json(postResponse)
   }
 }
