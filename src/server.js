@@ -5,7 +5,8 @@ const routes = require('./routes')
 const server = express()
 
 server.use(cors())
-server.get('/', routes.index)
+server.use(express.json())
+server.post('/', routes.create)
 
 server.listen(3333, () => {
   console.log('Server running on port 3333.')
