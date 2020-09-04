@@ -1,33 +1,11 @@
-const PostOffices = require('node-correios')
+const express = require('express')
 
-module.exports = {
-  // Retorna dados tratados
-  async index (request, response) {
-    const { cep } = request.body
+const SearchCepController = require('./controllers/SearchCepController')
 
-    const postOffices = new PostOffices()
+const routes = express.Router()
+const searchCepController = new SearchCepController()
 
-    const postResponse = await postOffices.consultaCEP({ cep })
+routes.get('/search-cep', searchCepController.index)
+routes.post('/search-cep', searchCepController.create)
 
-    const responseCep = {
-      cep,
-      address: postResponse.logradouro,
-      neighborhood: postResponse.bairro,
-      location: postResponse.localidade,
-      uf: postResponse.uf
-    }
-
-    return response.json(responseCep)
-  },
-
-  // Retorna todos os dados vindos da API
-  async create (request, response) {
-    const { cep } = request.body
-
-    const postOffices = new PostOffices()
-
-    const postResponse = await postOffices.consultaCEP({ cep })
-
-    return response.json(postResponse)
-  }
-}
+module.exports = routes
